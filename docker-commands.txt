@@ -2,7 +2,7 @@
 netstat -aof | findstr <num_port>
 
 # Create Network
-docker create network library-network
+docker network create library-network
 
 # Run Postegres Container in the version: 17.1
 docker run --name librarydb -p 5432:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres -e POSTGRES_DB=library -d --network library-network postgres:17.1
