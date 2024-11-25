@@ -13,5 +13,5 @@ create table book(
 	gender varchar(30) not null,
 	price numeric(18,2) not null,
 	id_author uuid not null references author(id),
-	constraint chk_gender check( gender in ('FICTION', 'FANTASY','MISTERY','ROMANCE','BIOGRAPHY','SCIENCE'))
+	constraint chk_gender check( gender in ('FICTION', 'FANTASY','MYSTERY','ROMANCE','BIOGRAPHY','SCIENCE'))
 );
