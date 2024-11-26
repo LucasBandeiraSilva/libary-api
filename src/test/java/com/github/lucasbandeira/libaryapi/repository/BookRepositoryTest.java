@@ -81,4 +81,30 @@ public class BookRepositoryTest {
         bookRepository.save(book);
 
     }
+
+    @Test
+    void updateBookAuthorTest(){
+        UUID id = UUID.fromString("a54a9613-a838-487c-92d1-dc1f0196fc1d");
+        var bookToUpdate = bookRepository.findById(id)
+                .orElse(null);
+
+        UUID authorId = UUID.fromString("d79958d3-db05-45c2-9e66-c736cede74e9");
+        Author author = authorRepository.findById(authorId).orElse(null);
+
+        bookToUpdate.setAuthor(author);
+
+        bookRepository.save(bookToUpdate);
+    }
+
+    @Test
+    void deleteByIdTest(){
+        UUID id = UUID.fromString("a54a9613-a838-487c-92d1-dc1f0196fc1d");
+        bookRepository.deleteById(id);
+    }
+
+    @Test
+    void deleteCascadeTest(){
+        UUID id = UUID.fromString("ec527ce8-64fb-4f4e-abb7-f636630e8cdd");
+        bookRepository.deleteById(id);
+    }
 }
