@@ -6,6 +6,7 @@ import com.github.lucasbandeira.libaryapi.model.BookGender;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -106,5 +107,16 @@ public class BookRepositoryTest {
     void deleteCascadeTest(){
         UUID id = UUID.fromString("ec527ce8-64fb-4f4e-abb7-f636630e8cdd");
         bookRepository.deleteById(id);
+    }
+
+    @Test
+    @Transactional
+    void findBookTest(){
+        UUID bookId = UUID.fromString("76985ac4-996d-46a5-9b24-53f8b9474334");
+        Book book = bookRepository.findById(bookId).orElse(null);
+        System.out.println("Book: ");
+        System.out.println(book.getTitle());
+        System.out.println("Author: ");
+        System.out.println(book.getAuthor().getName());
     }
 }
