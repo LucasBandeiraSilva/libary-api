@@ -6,13 +6,11 @@ import com.github.lucasbandeira.libaryapi.model.BookGender;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @SpringBootTest
 public class AuthorRepositoryTest {
@@ -108,5 +106,16 @@ public class AuthorRepositoryTest {
 
         authorRepository.save(author);
         //bookRepository.saveAll(author.getBooks());
+    }
+    @Test
+    void listBooksAuthorTest(){
+        UUID idAuthor = UUID.fromString("a2d8bb9f-f8d4-4a65-97b3-e6d606994e11");
+        Author author = authorRepository.findById(idAuthor).get();
+
+        List <Book> bookList = bookRepository.findByAuthor(author);
+        author.setBooks(bookList);
+
+        author.getBooks().forEach(System.out::println);
+
     }
 }
