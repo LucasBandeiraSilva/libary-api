@@ -139,4 +139,25 @@ public class BookRepositoryTest {
         bookList.forEach(System.out::println);
 
     }
+
+    @Test
+    void listBooksWithQueryJPQL(){
+        bookRepository.showAllBooksSortedByTitleAndPrice().forEach(System.out::println);
+    }
+    @Test
+    void listBooksAuthorsTest(){
+        bookRepository.listBooksAuthors().forEach(System.out::println);
+    }
+
+    @Test
+    void listBookNamesTest(){
+        bookRepository.listBookNames().forEach(System.out::println);
+    }
+
+    @Test
+    void listAuthorGenderBrazilian(){
+        bookRepository.listAuthorGenderBrazilian().forEach(System.out::println);
+    }
+
+
 }
