@@ -25,16 +25,16 @@ public class BookRepositoryTest {
     @Test
     public void saveTest(){
         Book book = new Book();
-        book.setIsbn("90445-85761");
+        book.setIsbn("20991-20771");
         book.setPrice(BigDecimal.valueOf(100));
-        book.setGender(BookGender.FICTION);
-        book.setTitle("UFO");
-        book.setPublicationDate(LocalDate.of(2020,2,1));
+        book.setGender(BookGender.SCIENCE);
+        book.setTitle("Milky Way: All what you need to know about it! ");
+        book.setPublicationDate(LocalDate.of(2018,2,1));
 
         Author author = authorRepository
                 .findById(UUID.fromString("d79958d3-db05-45c2-9e66-c736cede74e9"))
                 .orElse(null);
-        book.setAuthor(author);
+       // book.setAuthor(author);
 
         bookRepository.save(book);
 
@@ -166,6 +166,16 @@ public class BookRepositoryTest {
     @Test
     void findByGenderPositionalParametersTest(){
         bookRepository.findByGender(BookGender.MYSTERY,"price").forEach(System.out::println);
+    }
+
+    @Test
+    void deleteByGenderTest(){
+        bookRepository.deleteByGender(BookGender.SCIENCE);
+    }
+
+    @Test
+    void updatePublicationDateTest(){
+        bookRepository.updatePublicationDate(LocalDate.of(2022,3,3));
     }
 
 
