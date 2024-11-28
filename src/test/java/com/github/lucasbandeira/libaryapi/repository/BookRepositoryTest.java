@@ -158,6 +158,15 @@ public class BookRepositoryTest {
     void listAuthorGenderBrazilian(){
         bookRepository.listAuthorGenderBrazilian().forEach(System.out::println);
     }
+    @Test
+    void findByGenderQueryParamTest(){
+        bookRepository.findByGender(BookGender.MYSTERY,"publicationDate").forEach(System.out::println);
+    }
+
+    @Test
+    void findByGenderPositionalParametersTest(){
+        bookRepository.findByGender(BookGender.MYSTERY,"price").forEach(System.out::println);
+    }
 
 
 }

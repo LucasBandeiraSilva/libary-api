@@ -2,8 +2,10 @@ package com.github.lucasbandeira.libaryapi.repository;
 
 import com.github.lucasbandeira.libaryapi.model.Author;
 import com.github.lucasbandeira.libaryapi.model.Book;
+import com.github.lucasbandeira.libaryapi.model.BookGender;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -44,4 +46,13 @@ public interface BookRepository extends JpaRepository <Book, UUID> {
             order by b.gender
             """)
     List<String>listAuthorGenderBrazilian();
+
+    // Named parameters
+    @Query("select b from Book b where b.gender = :gender order by :sortParam")
+    List <Book> findByGender(@Param("gender") BookGender bookGender, @Param("sortParam") String propertyName );
+
+    // Positional Parameters
+    @Query("select b from Book b where b.gender = ?1 order by ?2")
+    List <Book> findByGenderPositionalParameters( BookGender bookGender,  String propertyName );
 }
+
