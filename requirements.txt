@@ -1,0 +1,63 @@
+Author Registration
+
+# Description
+    The system should allow for the registration, update, retrieval, and deletion of book authors.
+
+# Actors
+    Only the Manager can register, update, and delete Authors.
+    The Operator user can only retrieve Author data.
+
+# Business Required Fields
+    Data to be stored:
+        Name *
+        Date of Birth *
+        Nationality *
+
+    Fields marked with (*) are mandatory.
+
+# Logical Fields
+    Data not requested by the business team, but required for application control and auditing:
+    ID - UUID
+    Date Created
+    Last Update Date
+    Last Updated By User
+
+
+# Business Rules
+    Do not allow registering an Author with the same Name, Date of Birth, and Nationality.  If two authors have the same Name, Date of Birth, and Nationality, they will be considered duplicates and registration will be denied.
+    Do not allow deleting an Author who has any associated books.
+
+
+
+
+
+Book Registration
+
+# Description
+    The system should allow for the registration, update, retrieval, and deletion of books.  When retrieving a book, several search filters should be available for paginated search, including search fields for: title, genre, ISBN, author's name, and publication year.
+
+# Actors
+    Both Operator and Manager users can retrieve, register, update, and delete Books.
+
+# Business Required Fields
+    Data to be stored:
+        ISBN *
+        Title *
+        Publication Date *
+        Genre
+        Price
+        Author *
+
+    Fields marked with (*) are mandatory.
+
+# Logical Fields
+    Data not requested by the business team, but required for application control and auditing:
+        ID - UUID
+        Date Created
+        Last Update Date
+        Last Updated By User
+
+# Business Rules
+    Do not allow registering a Book with the same ISBN as another book.
+    If the publication date is from 2020 onwards, the price must be provided.
+    The publication date cannot be a future date.
