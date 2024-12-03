@@ -22,7 +22,7 @@ public class AuthorController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> saveAuthor( @RequestBody AuthorDTO authorDTO ){
+    public ResponseEntity <Void> saveAuthor( @RequestBody AuthorDTO authorDTO ) {
         Author author = authorDTO.toAuthor();
         authorService.save(author);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(author.getId()).toUri();
@@ -30,14 +30,26 @@ public class AuthorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AuthorDTO> getDetails( @PathVariable String id ){
+    public ResponseEntity <AuthorDTO> getDetails( @PathVariable String id ) {
         var authorId = UUID.fromString(id);
         Optional <Author> authorOptional = authorService.getById(authorId);
-        if (authorOptional.isPresent()){
+        if (authorOptional.isPresent()) {
             Author author = authorOptional.get();
             AuthorDTO authorDTO = new AuthorDTO(author.getId(), author.getName(), author.getBirthdate(), author.getNationality());
             return ResponseEntity.ok(authorDTO);
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity <Void> delete( @PathVariable String id ) {
+        var authorId = UUID.fromString(id);
+        Optional <Author> authorOptional = authorService.getById(authorId);
+        if (authorOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        authorService.delete(authorOptional.get());
+        return ResponseEntity.noContent().build();
     }
 }

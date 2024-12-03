@@ -1,6 +1,5 @@
 package com.github.lucasbandeira.libaryapi.service;
 
-import com.github.lucasbandeira.libaryapi.dto.AuthorDTO;
 import com.github.lucasbandeira.libaryapi.model.Author;
 import com.github.lucasbandeira.libaryapi.repository.AuthorRepository;
 import org.springframework.stereotype.Service;
@@ -23,5 +22,9 @@ public class AuthorService {
 
     public Optional<Author> getById( UUID id){
         return authorRepository.findById(id);
+    }
+
+    public void delete( Author author ) {
+        authorRepository.delete(author); ;
     }
 }

@@ -59,7 +59,7 @@ public interface BookRepository extends JpaRepository <Book, UUID> {
 
     @Transactional
     @Modifying
-    @Query("delete from Book where gender = ?1")
+    @Query("DELETE FROM Book b WHERE b.gender = ?1")
     void deleteByGender(BookGender gender);
 
     @Transactional
