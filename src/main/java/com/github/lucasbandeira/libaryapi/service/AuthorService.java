@@ -35,4 +35,11 @@ public class AuthorService {
         if (nationality != null) return  authorRepository.findByNationality(nationality);
         return authorRepository.findAll();
     }
+
+    public void update(Author author){
+        if (author.getId() == null) throw new IllegalArgumentException("Author does not exists in the database, " +
+                "save it, to update");
+        authorRepository.save(author);
+    }
+
 }
