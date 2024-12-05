@@ -6,7 +6,7 @@ import java.util.List;
 
 public record ErrorResponse(int status, String message, List <FieldError> fieldErrors) {
 
-    public static ErrorResponse standartResponse( String message ) {
+    public static ErrorResponse standardResponse( String message ) {
         return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), message, List.of());
     }
 

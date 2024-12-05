@@ -1,8 +1,11 @@
 package com.github.lucasbandeira.libaryapi.service;
 
+import com.github.lucasbandeira.libaryapi.exceprions.OperationNotAllowedException;
 import com.github.lucasbandeira.libaryapi.model.Author;
 import com.github.lucasbandeira.libaryapi.repository.AuthorRepository;
+import com.github.lucasbandeira.libaryapi.repository.BookRepository;
 import com.github.lucasbandeira.libaryapi.validator.AuthorValidator;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,42 +13,48 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class AuthorService {
 
     private final AuthorRepository authorRepository;
     private final AuthorValidator authorValidator;
+    private final BookRepository bookRepository;
 
-    public AuthorService( AuthorRepository authorRepository, AuthorValidator authorValidator ) {
-        this.authorRepository = authorRepository;
-        this.authorValidator = authorValidator;
-    }
 
-    public Author save(Author author){
+
+    public Author save( Author author ) {
         authorValidator.validate(author);
         return authorRepository.save(author);
     }
 
-    public Optional<Author> getById( UUID id){
+    public Optional <Author> getById( UUID id ) {
         return authorRepository.findById(id);
     }
 
     public void delete( Author author ) {
-        authorRepository.delete(author); ;
+        if (hasBook(author)) throw new OperationNotAllowedException("It is not allowed exclude Authors " +
+                "who already has books registered!");
+
+        authorRepository.delete(author);
     }
 
-    public List<Author>search(String name, String nationality){
-        if (name != null && nationality != null)  return authorRepository.findByNameAndNationality(name,nationality);
-        if (name != null) return  authorRepository.findByName(name);
-        if (nationality != null) return  authorRepository.findByNationality(nationality);
+    public List <Author> search( String name, String nationality ) {
+        if (name != null && nationality != null) return authorRepository.findByNameAndNationality(name, nationality);
+        if (name != null) return authorRepository.findByName(name);
+        if (nationality != null) return authorRepository.findByNationality(nationality);
         return authorRepository.findAll();
     }
 
-    public void update(Author author){
+    public void update( Author author ) {
         if (author.getId() == null) throw new IllegalArgumentException("Author does not exists in the database, " +
                 "save it, to update");
 
         authorValidator.validate(author);
         authorRepository.save(author);
+    }
+
+    public boolean hasBook( Author author ) {
+        return bookRepository.existsByAuthor(author);
     }
 
 }

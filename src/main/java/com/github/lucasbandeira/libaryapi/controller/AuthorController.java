@@ -3,8 +3,10 @@ package com.github.lucasbandeira.libaryapi.controller;
 import com.github.lucasbandeira.libaryapi.dto.AuthorDTO;
 import com.github.lucasbandeira.libaryapi.dto.ErrorResponse;
 import com.github.lucasbandeira.libaryapi.exceprions.DuplicateRegisterException;
+import com.github.lucasbandeira.libaryapi.exceprions.OperationNotAllowedException;
 import com.github.lucasbandeira.libaryapi.model.Author;
 import com.github.lucasbandeira.libaryapi.service.AuthorService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -17,13 +19,10 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/authors")
+@RequiredArgsConstructor
 public class AuthorController {
 
     private final AuthorService authorService;
-
-    public AuthorController( AuthorService authorService ) {
-        this.authorService = authorService;
-    }
 
     @PostMapping
     public ResponseEntity <Object> saveAuthor( @RequestBody AuthorDTO authorDTO ) {
@@ -51,15 +50,20 @@ public class AuthorController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity <Void> delete( @PathVariable String id ) {
-        var authorId = UUID.fromString(id);
-        Optional <Author> authorOptional = authorService.getById(authorId);
-        if (authorOptional.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity <Object> delete( @PathVariable String id ) {
+        try {
+            var authorId = UUID.fromString(id);
+            Optional <Author> authorOptional = authorService.getById(authorId);
+            if (authorOptional.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
 
-        authorService.delete(authorOptional.get());
-        return ResponseEntity.noContent().build();
+            authorService.delete(authorOptional.get());
+            return ResponseEntity.noContent().build();
+        } catch (OperationNotAllowedException e) {
+            var dtoError = ErrorResponse.standardResponse(e.getMessage());
+            return ResponseEntity.status(dtoError.status()).body(dtoError);
+        }
     }
 
     @GetMapping
