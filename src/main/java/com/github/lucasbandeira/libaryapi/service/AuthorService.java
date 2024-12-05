@@ -2,6 +2,7 @@ package com.github.lucasbandeira.libaryapi.service;
 
 import com.github.lucasbandeira.libaryapi.model.Author;
 import com.github.lucasbandeira.libaryapi.repository.AuthorRepository;
+import com.github.lucasbandeira.libaryapi.validator.AuthorValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,12 +13,15 @@ import java.util.UUID;
 public class AuthorService {
 
     private final AuthorRepository authorRepository;
+    private final AuthorValidator authorValidator;
 
-    public AuthorService( AuthorRepository authorRepository ) {
+    public AuthorService( AuthorRepository authorRepository, AuthorValidator authorValidator ) {
         this.authorRepository = authorRepository;
+        this.authorValidator = authorValidator;
     }
 
     public Author save(Author author){
+        authorValidator.validate(author);
         return authorRepository.save(author);
     }
 
@@ -39,6 +43,8 @@ public class AuthorService {
     public void update(Author author){
         if (author.getId() == null) throw new IllegalArgumentException("Author does not exists in the database, " +
                 "save it, to update");
+
+        authorValidator.validate(author);
         authorRepository.save(author);
     }
 
