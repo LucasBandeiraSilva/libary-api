@@ -6,6 +6,8 @@ import com.github.lucasbandeira.libaryapi.repository.AuthorRepository;
 import com.github.lucasbandeira.libaryapi.repository.BookRepository;
 import com.github.lucasbandeira.libaryapi.validator.AuthorValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,6 +45,22 @@ public class AuthorService {
         if (name != null) return authorRepository.findByName(name);
         if (nationality != null) return authorRepository.findByNationality(nationality);
         return authorRepository.findAll();
+    }
+
+    public List<Author> searchByExample(String name, String nationality){
+        var author = new Author();
+        author.setName(name);
+        author.setNationality(nationality);
+
+        ExampleMatcher matcher = ExampleMatcher
+                .matching()
+                .withIgnorePaths("id", "birthDate")
+                .withIgnoreNullValues()
+                .withIgnoreCase()
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+
+        Example <Author> authorExample = Example.of(author,matcher);
+        return  authorRepository.findAll(authorExample);
     }
 
     public void update( Author author ) {
