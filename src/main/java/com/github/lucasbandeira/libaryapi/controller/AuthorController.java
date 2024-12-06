@@ -6,6 +6,7 @@ import com.github.lucasbandeira.libaryapi.exceprions.DuplicateRegisterException;
 import com.github.lucasbandeira.libaryapi.exceprions.OperationNotAllowedException;
 import com.github.lucasbandeira.libaryapi.model.Author;
 import com.github.lucasbandeira.libaryapi.service.AuthorService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class AuthorController {
     private final AuthorService authorService;
 
     @PostMapping
-    public ResponseEntity <Object> saveAuthor( @RequestBody AuthorDTO authorDTO ) {
+    public ResponseEntity <Object> saveAuthor( @RequestBody @Valid AuthorDTO authorDTO ) {
         try {
             Author author = authorDTO.toAuthor();
             authorService.save(author);
@@ -83,7 +84,7 @@ public class AuthorController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity <Object> update( @PathVariable String id, @RequestBody AuthorDTO dto ) {
+    public ResponseEntity <Object> update( @PathVariable String id, @Valid @RequestBody AuthorDTO dto ) {
         try {
             var authorId = UUID.fromString(id);
             Optional <Author> authorOptional = authorService.getById(authorId);
