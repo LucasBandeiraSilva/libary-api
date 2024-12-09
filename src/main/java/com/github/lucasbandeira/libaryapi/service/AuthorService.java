@@ -54,7 +54,7 @@ public class AuthorService {
 
         ExampleMatcher matcher = ExampleMatcher
                 .matching()
-                .withIgnorePaths("id", "birthDate")
+                .withIgnorePaths("id", "birthdate")
                 .withIgnoreNullValues()
                 .withIgnoreCase()
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);

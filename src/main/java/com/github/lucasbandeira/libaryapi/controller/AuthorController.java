@@ -1,5 +1,6 @@
 package com.github.lucasbandeira.libaryapi.controller;
 
+import com.github.lucasbandeira.libaryapi.controller.mappers.AuthorMapper;
 import com.github.lucasbandeira.libaryapi.dto.AuthorDTO;
 import com.github.lucasbandeira.libaryapi.dto.ErrorResponse;
 import com.github.lucasbandeira.libaryapi.exceprions.DuplicateRegisterException;
@@ -24,11 +25,12 @@ import java.util.stream.Collectors;
 public class AuthorController {
 
     private final AuthorService authorService;
+    private final AuthorMapper mapper;
 
     @PostMapping
     public ResponseEntity <Object> saveAuthor( @RequestBody @Valid AuthorDTO authorDTO ) {
         try {
-            Author author = authorDTO.toAuthor();
+            Author author = mapper.toEntity(authorDTO);
             authorService.save(author);
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(author.getId()).toUri();
             return ResponseEntity.created(location).build();
@@ -41,13 +43,13 @@ public class AuthorController {
     @GetMapping("/{id}")
     public ResponseEntity <AuthorDTO> getDetails( @PathVariable String id ) {
         var authorId = UUID.fromString(id);
-        Optional <Author> authorOptional = authorService.getById(authorId);
-        if (authorOptional.isPresent()) {
-            Author author = authorOptional.get();
-            AuthorDTO authorDTO = new AuthorDTO(author.getId(), author.getName(), author.getBirthdate(), author.getNationality());
-            return ResponseEntity.ok(authorDTO);
-        }
-        return ResponseEntity.notFound().build();
+//        Optional <Author> authorOptional = authorService.getById(authorId);
+//        authorOptional.ifPresent(author -> System.out.println("Author birthdate: " + author.getBirthdate()));
+
+
+        return  authorService
+                .getById(authorId)
+                .map(author -> ResponseEntity.ok(mapper.toDto(author))).orElseGet(()-> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
@@ -73,11 +75,7 @@ public class AuthorController {
         List <Author> result = authorService.searchByExample(name, nationality);
         List <AuthorDTO> authorList = result
                 .stream()
-                .map(author -> new AuthorDTO(
-                        author.getId(),
-                        author.getName(),
-                        author.getBirthdate(),
-                        author.getNationality()))
+                .map(mapper::toDto)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(authorList);
 
@@ -93,7 +91,7 @@ public class AuthorController {
             }
             var author = authorOptional.get();
             author.setName(dto.name());
-            author.setBirthdate(dto.birthDate());
+            author.setBirthdate(dto.birthdate());
             author.setNationality(dto.nationality());
 
             authorService.update(author);
