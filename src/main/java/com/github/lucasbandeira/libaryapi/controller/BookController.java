@@ -21,7 +21,6 @@ public class BookController implements GenericController {
     private final BookService bookService;
     private final BookMapper mapper;
 
-
     @PostMapping
     public ResponseEntity <Void> save( @RequestBody @Valid BookRegisterDTO bookRegisterDTO ) {
         Book book = mapper.toEntity(bookRegisterDTO);
@@ -34,7 +33,15 @@ public class BookController implements GenericController {
     @GetMapping("/{id}")
     public ResponseEntity <ResultSearchBookDTO> getDetails( @PathVariable String id ) {
         var bookId = UUID.fromString(id);
-        return bookService.getById(bookId).map(book -> ResponseEntity.ok(mapper.toDTO(book))).orElseGet(()-> ResponseEntity.notFound().build());
+        return bookService.getById(bookId).map(book -> ResponseEntity.ok(mapper.toDTO(book))).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity <Object> deleteBook(@PathVariable String id){
+        return bookService.getById(UUID.fromString(id))
+            .map(book -> {
+            bookService.delete(book);
+            return ResponseEntity.noContent().build();
+        }).orElseGet(()-> ResponseEntity.notFound().build());
+    }
 }

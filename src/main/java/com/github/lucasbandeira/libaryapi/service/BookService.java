@@ -22,4 +22,8 @@ public class BookService {
     public Optional<Book>getById( UUID id ){
         return bookRepository.findById(id);
     }
+
+    public void delete (Book book){
+        bookRepository.delete(book);
+    }
 }
