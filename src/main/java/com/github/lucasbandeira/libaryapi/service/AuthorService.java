@@ -23,7 +23,6 @@ public class AuthorService {
     private final BookRepository bookRepository;
 
 
-
     public Author save( Author author ) {
         authorValidator.validate(author);
         return authorRepository.save(author);
@@ -47,7 +46,7 @@ public class AuthorService {
         return authorRepository.findAll();
     }
 
-    public List<Author> searchByExample(String name, String nationality){
+    public List <Author> searchByExample( String name, String nationality ) {
         var author = new Author();
         author.setName(name);
         author.setNationality(nationality);
@@ -59,8 +58,8 @@ public class AuthorService {
                 .withIgnoreCase()
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
 
-        Example <Author> authorExample = Example.of(author,matcher);
-        return  authorRepository.findAll(authorExample);
+        Example <Author> authorExample = Example.of(author, matcher);
+        return authorRepository.findAll(authorExample);
     }
 
     public void update( Author author ) {

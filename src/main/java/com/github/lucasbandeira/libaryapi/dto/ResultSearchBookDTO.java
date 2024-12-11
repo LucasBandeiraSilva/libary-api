@@ -13,5 +13,5 @@ public record ResultSearchBookDTO(
         LocalDate publicationDate,
         BookGender gender,
         BigDecimal price,
-        AuthorDTO authorDTO) {
+        AuthorDTO author) {
 }
