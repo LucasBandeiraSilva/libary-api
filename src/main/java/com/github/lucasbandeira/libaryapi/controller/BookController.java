@@ -54,7 +54,7 @@ public class BookController implements GenericController {
             String isbn,
             @RequestParam(required = false)
             String title,
-            @RequestParam(required = false)
+            @RequestParam(value = "author-name",required = false)
             String authorName,
             @RequestParam(required = false)
             BookGender gender,
