@@ -4,6 +4,7 @@ import com.github.lucasbandeira.libaryapi.model.Author;
 import com.github.lucasbandeira.libaryapi.model.Book;
 import com.github.lucasbandeira.libaryapi.model.BookGender;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,7 +19,7 @@ import java.util.UUID;
  * @see  BookRepositoryTest
  */
 
-public interface BookRepository extends JpaRepository <Book, UUID> {
+public interface BookRepository extends JpaRepository <Book, UUID> , JpaSpecificationExecutor<Book> {
 
     List <Book> findByAuthor( Author author );
 
@@ -68,5 +69,6 @@ public interface BookRepository extends JpaRepository <Book, UUID> {
     void updatePublicationDate(LocalDate date);
 
     boolean existsByAuthor( Author author );
+
 }
 
