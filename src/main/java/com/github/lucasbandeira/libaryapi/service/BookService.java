@@ -39,13 +39,13 @@ public class BookService {
         if (isbn != null) {
             specification = specification.and(isbnEqual(isbn));
         }
-        if (title != null){
+        if (title != null) {
             specification = specification.and(titleLike(title));
         }
-        if (gender != null){
+        if (gender != null) {
             specification = specification.and(genderEqual(gender));
         }
-        if (publicationYear != null){
+        if (publicationYear != null) {
             specification = specification.and(publicationYearEqual(publicationYear));
         }
 
@@ -54,5 +54,13 @@ public class BookService {
         }
 
         return bookRepository.findAll(specification);
+    }
+
+    public void update( Book book ) {
+        if (book.getId() == null) {
+            throw new IllegalArgumentException("Book does not exists in the database, " +
+                    "save it, to update");
+        }
+        bookRepository.save(book);
     }
 }
