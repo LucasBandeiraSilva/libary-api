@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -25,7 +26,7 @@ public interface BookRepository extends JpaRepository <Book, UUID> , JpaSpecific
 
     List<Book>findByTitle(String title);
 
-    List<Book>findByIsbn(String isbn);
+    Optional <Book> findByIsbn( String isbn);
 
     List<Book>findByTitleAndPrice( String title, BigDecimal price );
 

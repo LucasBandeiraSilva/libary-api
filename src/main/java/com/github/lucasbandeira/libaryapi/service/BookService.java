@@ -3,6 +3,7 @@ package com.github.lucasbandeira.libaryapi.service;
 import com.github.lucasbandeira.libaryapi.model.Book;
 import com.github.lucasbandeira.libaryapi.model.BookGender;
 import com.github.lucasbandeira.libaryapi.repository.BookRepository;
+import com.github.lucasbandeira.libaryapi.validator.BookValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -18,9 +19,11 @@ import static com.github.lucasbandeira.libaryapi.repository.specs.BookSpecs.*;
 public class BookService {
 
     private final BookRepository bookRepository;
+    private final BookValidator validator;
 
 
     public Book save( Book book ) {
+        validator.validate(book);
         return bookRepository.save(book);
     }
 
