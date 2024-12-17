@@ -1,4 +1,4 @@
-package com.github.lucasbandeira.libaryapi.exceprions;
+package com.github.lucasbandeira.libaryapi.exceptions;
 
 public class DuplicateRegisterException extends RuntimeException {
     public DuplicateRegisterException( String message ) {

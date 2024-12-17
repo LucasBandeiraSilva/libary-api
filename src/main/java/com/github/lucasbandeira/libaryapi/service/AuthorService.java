@@ -1,6 +1,6 @@
 package com.github.lucasbandeira.libaryapi.service;
 
-import com.github.lucasbandeira.libaryapi.exceprions.OperationNotAllowedException;
+import com.github.lucasbandeira.libaryapi.exceptions.OperationNotAllowedException;
 import com.github.lucasbandeira.libaryapi.model.Author;
 import com.github.lucasbandeira.libaryapi.repository.AuthorRepository;
 import com.github.lucasbandeira.libaryapi.repository.BookRepository;

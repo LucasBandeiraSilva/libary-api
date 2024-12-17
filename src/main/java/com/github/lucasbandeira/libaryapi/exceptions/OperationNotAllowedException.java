@@ -1,4 +1,4 @@
-package com.github.lucasbandeira.libaryapi.exceprions;
+package com.github.lucasbandeira.libaryapi.exceptions;
 
 public class OperationNotAllowedException extends RuntimeException {
     public OperationNotAllowedException( String message ) {

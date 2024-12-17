@@ -1,6 +1,6 @@
 package com.github.lucasbandeira.libaryapi.validator;
 
-import com.github.lucasbandeira.libaryapi.exceprions.DuplicateRegisterException;
+import com.github.lucasbandeira.libaryapi.exceptions.DuplicateRegisterException;
 import com.github.lucasbandeira.libaryapi.model.Author;
 import com.github.lucasbandeira.libaryapi.repository.AuthorRepository;
 import org.springframework.stereotype.Component;
