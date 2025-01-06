@@ -22,19 +22,24 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain( HttpSecurity httpSecurity ) throws Exception {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
-                .formLogin(configure -> configure.loginPage("/login").permitAll())
+                .formLogin(configure -> configure.loginPage("/login"))
                 .httpBasic(Customizer.withDefaults())
-                .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+                .authorizeHttpRequests(authorize -> {
+                    authorize.requestMatchers("/login").permitAll();
+                    authorize.requestMatchers("/authors/**").hasRole("ADMIN");
+                    authorize.requestMatchers("/books/**").hasAnyRole("USER", "ADMIN");
+                    authorize.anyRequest().authenticated();
+                })
                 .build();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(10);
     }
 
     @Bean
-    public UserDetailsService userDetailsService(PasswordEncoder encoder) {
+    public UserDetailsService userDetailsService( PasswordEncoder encoder ) {
         UserDetails user1 = User.builder()
                 .username("user")
                 .password(encoder.encode("1234"))
@@ -45,6 +50,6 @@ public class SecurityConfiguration {
                 .password(encoder.encode("4321"))
                 .roles("ADMIN")
                 .build();
-        return new InMemoryUserDetailsManager(user1,user2);
+        return new InMemoryUserDetailsManager(user1, user2);
     }
 }
