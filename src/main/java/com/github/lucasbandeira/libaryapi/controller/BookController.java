@@ -1,8 +1,8 @@
 package com.github.lucasbandeira.libaryapi.controller;
 
 import com.github.lucasbandeira.libaryapi.controller.mappers.BookMapper;
-import com.github.lucasbandeira.libaryapi.dto.BookRegisterDTO;
-import com.github.lucasbandeira.libaryapi.dto.ResultSearchBookDTO;
+import com.github.lucasbandeira.libaryapi.controller.dto.BookRegisterDTO;
+import com.github.lucasbandeira.libaryapi.controller.dto.ResultSearchBookDTO;
 import com.github.lucasbandeira.libaryapi.model.Book;
 import com.github.lucasbandeira.libaryapi.model.BookGender;
 import com.github.lucasbandeira.libaryapi.service.BookService;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor

@@ -1,7 +1,7 @@
 package com.github.lucasbandeira.libaryapi.controller;
 
 import com.github.lucasbandeira.libaryapi.controller.mappers.AuthorMapper;
-import com.github.lucasbandeira.libaryapi.dto.AuthorDTO;
+import com.github.lucasbandeira.libaryapi.controller.dto.AuthorDTO;
 import com.github.lucasbandeira.libaryapi.model.Author;
 import com.github.lucasbandeira.libaryapi.service.AuthorService;
 import jakarta.validation.Valid;

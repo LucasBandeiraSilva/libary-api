@@ -1,7 +1,7 @@
 package com.github.lucasbandeira.libaryapi.controller.mappers;
 
-import com.github.lucasbandeira.libaryapi.dto.BookRegisterDTO;
-import com.github.lucasbandeira.libaryapi.dto.ResultSearchBookDTO;
+import com.github.lucasbandeira.libaryapi.controller.dto.BookRegisterDTO;
+import com.github.lucasbandeira.libaryapi.controller.dto.ResultSearchBookDTO;
 import com.github.lucasbandeira.libaryapi.model.Book;
 import com.github.lucasbandeira.libaryapi.repository.AuthorRepository;
 import org.mapstruct.Mapper;

@@ -1,7 +1,7 @@
 package com.github.lucasbandeira.libaryapi.controller.common;
 
-import com.github.lucasbandeira.libaryapi.dto.ApiFieldError;
-import com.github.lucasbandeira.libaryapi.dto.ErrorResponse;
+import com.github.lucasbandeira.libaryapi.controller.dto.ApiFieldError;
+import com.github.lucasbandeira.libaryapi.controller.dto.ErrorResponse;
 import com.github.lucasbandeira.libaryapi.exceptions.DuplicateRegisterException;
 import com.github.lucasbandeira.libaryapi.exceptions.InvalidCampException;
 import com.github.lucasbandeira.libaryapi.exceptions.OperationNotAllowedException;

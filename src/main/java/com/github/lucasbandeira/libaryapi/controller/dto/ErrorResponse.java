@@ -1,4 +1,4 @@
-package com.github.lucasbandeira.libaryapi.dto;
+package com.github.lucasbandeira.libaryapi.controller.dto;
 
 import org.springframework.http.HttpStatus;
 
