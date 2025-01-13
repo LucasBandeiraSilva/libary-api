@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -24,6 +25,7 @@ public class BookController implements GenericController {
     private final BookMapper mapper;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('OPERATOR','MANAGER')")
     public ResponseEntity <Void> save( @RequestBody @Valid BookRegisterDTO bookRegisterDTO ) {
         Book book = mapper.toEntity(bookRegisterDTO);
         bookService.save(book);
@@ -33,12 +35,14 @@ public class BookController implements GenericController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('OPERATOR','MANAGER')")
     public ResponseEntity <ResultSearchBookDTO> getDetails( @PathVariable String id ) {
         var bookId = UUID.fromString(id);
         return bookService.getById(bookId).map(book -> ResponseEntity.ok(mapper.toDTO(book))).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('OPERATOR','MANAGER')")
     public ResponseEntity <Object> deleteBook( @PathVariable String id ) {
         return bookService.getById(UUID.fromString(id))
                 .map(book -> {
@@ -48,6 +52,7 @@ public class BookController implements GenericController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('OPERATOR','MANAGER')")
     public ResponseEntity <Page <ResultSearchBookDTO>> search(
             @RequestParam(required = false)
             String isbn,
@@ -73,6 +78,7 @@ public class BookController implements GenericController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('OPERATOR','MANAGER')")
     public ResponseEntity <Object> update( @PathVariable String id, @Valid @RequestBody BookRegisterDTO bookRegisterDTO ) {
 
         return  bookService.getById(UUID.fromString(id))

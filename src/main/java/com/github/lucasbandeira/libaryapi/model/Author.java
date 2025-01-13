@@ -45,6 +45,8 @@ public class Author {
     @LastModifiedDate
     private LocalDateTime updateDate;
 
-    private UUID userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Username username;
 
 }

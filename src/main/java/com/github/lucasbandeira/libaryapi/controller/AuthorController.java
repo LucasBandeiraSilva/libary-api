@@ -3,10 +3,17 @@ package com.github.lucasbandeira.libaryapi.controller;
 import com.github.lucasbandeira.libaryapi.controller.mappers.AuthorMapper;
 import com.github.lucasbandeira.libaryapi.controller.dto.AuthorDTO;
 import com.github.lucasbandeira.libaryapi.model.Author;
+import com.github.lucasbandeira.libaryapi.model.Username;
+import com.github.lucasbandeira.libaryapi.security.SecurityService;
 import com.github.lucasbandeira.libaryapi.service.AuthorService;
+import com.github.lucasbandeira.libaryapi.service.UsernameService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -21,10 +28,13 @@ import java.util.stream.Collectors;
 public class AuthorController implements GenericController {
 
     private final AuthorService authorService;
+    private final SecurityService securityService;
     private final AuthorMapper mapper;
 
     @PostMapping
+    @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity <Void> saveAuthor( @RequestBody @Valid AuthorDTO authorDTO ) {
+
         Author author = mapper.toEntity(authorDTO);
         authorService.save(author);
         URI location = generateHeaderLocation(author.getId());
@@ -32,6 +42,7 @@ public class AuthorController implements GenericController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('OPERATOR','MANAGER')")
     public ResponseEntity <AuthorDTO> getDetails( @PathVariable String id ) {
         var authorId = UUID.fromString(id);
 
@@ -41,18 +52,19 @@ public class AuthorController implements GenericController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity <Void> delete( @PathVariable String id ) {
         var authorId = UUID.fromString(id);
         Optional <Author> authorOptional = authorService.getById(authorId);
         if (authorOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-
         authorService.delete(authorOptional.get());
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('OPERATOR','MANAGER')")
     public ResponseEntity <List <AuthorDTO>> search( @RequestParam(value = "name", required = false) String name,
                                                      @RequestParam(value = "nationality", required = false) String nationality ) {
         List <Author> result = authorService.searchByExample(name, nationality);
@@ -65,6 +77,7 @@ public class AuthorController implements GenericController {
     }
 
     @PutMapping("{id}")
+    @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity <Void> update( @PathVariable String id, @Valid @RequestBody AuthorDTO dto ) {
         var authorId = UUID.fromString(id);
         Optional <Author> authorOptional = authorService.getById(authorId);

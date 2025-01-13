@@ -6,6 +6,7 @@ import com.github.lucasbandeira.libaryapi.exceptions.DuplicateRegisterException;
 import com.github.lucasbandeira.libaryapi.exceptions.InvalidCampException;
 import com.github.lucasbandeira.libaryapi.exceptions.OperationNotAllowedException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -48,8 +49,11 @@ public class GlobalExceptionHandler {
         return new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY.value(), "Validation Error!", List.of(new ApiFieldError(e.getField(), e.getMessage())));
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse handleAccessDeniedException( AccessDeniedException e ){
+        return new ErrorResponse(HttpStatus.FORBIDDEN.value(),"Access Denied.",List.of());
+    }
 
     public ErrorResponse handleGlobalException( RuntimeException e ) {
         return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "An unexpected error has occurred." +

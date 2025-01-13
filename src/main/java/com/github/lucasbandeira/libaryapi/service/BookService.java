@@ -2,7 +2,9 @@ package com.github.lucasbandeira.libaryapi.service;
 
 import com.github.lucasbandeira.libaryapi.model.Book;
 import com.github.lucasbandeira.libaryapi.model.BookGender;
+import com.github.lucasbandeira.libaryapi.model.Username;
 import com.github.lucasbandeira.libaryapi.repository.BookRepository;
+import com.github.lucasbandeira.libaryapi.security.SecurityService;
 import com.github.lucasbandeira.libaryapi.validator.BookValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,10 +25,13 @@ public class BookService {
 
     private final BookRepository bookRepository;
     private final BookValidator validator;
+    private final SecurityService securityService;
 
 
     public Book save( Book book ) {
         validator.validate(book);
+        Username username = securityService.getLoggedUser();
+        book.setUsername(username);
         return bookRepository.save(book);
     }
 

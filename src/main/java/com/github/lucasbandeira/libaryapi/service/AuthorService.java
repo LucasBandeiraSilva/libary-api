@@ -2,8 +2,10 @@ package com.github.lucasbandeira.libaryapi.service;
 
 import com.github.lucasbandeira.libaryapi.exceptions.OperationNotAllowedException;
 import com.github.lucasbandeira.libaryapi.model.Author;
+import com.github.lucasbandeira.libaryapi.model.Username;
 import com.github.lucasbandeira.libaryapi.repository.AuthorRepository;
 import com.github.lucasbandeira.libaryapi.repository.BookRepository;
+import com.github.lucasbandeira.libaryapi.security.SecurityService;
 import com.github.lucasbandeira.libaryapi.validator.AuthorValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
@@ -21,10 +23,14 @@ public class AuthorService {
     private final AuthorRepository authorRepository;
     private final AuthorValidator authorValidator;
     private final BookRepository bookRepository;
+    private final SecurityService securityService;
+
 
 
     public Author save( Author author ) {
         authorValidator.validate(author);
+        Username username = securityService.getLoggedUser();
+        author.setUsername(username);
         return authorRepository.save(author);
     }
 
