@@ -44,19 +44,9 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder(10);
     }
 
-    @Bean
+    //@Bean
     public UserDetailsService userDetailsService( UsernameService usernameService ) {
-//        UserDetails user1 = User.builder()
-//                .username("user")
-//                .password(encoder.encode("1234"))
-//                .roles("USER")
-//                .build();
-//        UserDetails user2 = User.builder()
-//                .username("admin")
-//                .password(encoder.encode("4321"))
-//                .roles("ADMIN")
-//                .build();
-//        return new InMemoryUserDetailsManager(user1, user2);
+
         return new CustomUserDetailsService(usernameService);
     }
 }
