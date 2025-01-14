@@ -22,9 +22,12 @@ create table book(
 	constraint chk_gender check( gender in ('FICTION', 'FANTASY','MYSTERY','ROMANCE','BIOGRAPHY','SCIENCE'))
 );
 
+drop table username;
+
 create table username (
     id uuid not null primary key,
     login varchar(20) not null unique,
     password varchar(300) not null,
+	email varchar(150) not null,
     roles varchar[] not null
 );

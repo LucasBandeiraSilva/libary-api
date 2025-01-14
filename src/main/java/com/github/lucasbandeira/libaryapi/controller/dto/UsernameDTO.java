@@ -1,6 +1,17 @@
 package com.github.lucasbandeira.libaryapi.controller.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
 import java.util.List;
 
-public record UsernameDTO(String login, String password, List<String>roles) {
+public record UsernameDTO(
+        @NotBlank(message = "Required Field!")
+        String login,
+        @Email(message = "Invalid e-mail!")
+        @NotBlank(message = "Required Field!")
+        String email,
+        @NotBlank(message = "Required Field!")
+        String password,
+        List <String> roles) {
 }
