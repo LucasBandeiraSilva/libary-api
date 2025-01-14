@@ -19,7 +19,7 @@ public class CustomAuthentication implements Authentication {
 
     @Override
     public Collection <GrantedAuthority> getAuthorities() {
-        return this.username.getRoles().stream().map(role -> new SimpleGrantedAuthority(role)).collect(Collectors.toList());
+        return this.username.getRoles().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
     @Override
