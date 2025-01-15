@@ -14,11 +14,13 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class SocialLoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
+    private static final String DEFAULT_PASSWORD = "321";
     private final UsernameService usernameService;
 
     @Override
@@ -27,8 +29,27 @@ public class SocialLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         OAuth2User oAuth2User = auth2AuthenticationToken.getPrincipal();
         String email = oAuth2User.getAttribute("email");
         Username username = usernameService.getByEmail(email);
+        if (username == null)
+            username = registerUsername(email);
+
+
         authentication = new CustomAuthentication(username);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         super.onAuthenticationSuccess(request, response, authentication);
+    }
+
+    private Username registerUsername(String email) {
+        Username username;
+        username = new Username();
+        username.setEmail(email);
+        username.setLogin(getLoginFromEmail(email));
+        username.setPassword(DEFAULT_PASSWORD);
+        username.setRoles(List.of("OPERATOR"));
+        usernameService.save(username);
+        return username;
+    }
+
+    private String getLoginFromEmail( String email ) {
+       return email.substring(0,email.indexOf("@"));
     }
 }
