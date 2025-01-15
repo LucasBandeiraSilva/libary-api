@@ -13,12 +13,18 @@ public class UsernameService {
     private final UsernameRepository usernameRepository;
     private final PasswordEncoder encoder;
 
-    public void save( Username username ){
+    public void save( Username username ) {
         var password = username.getPassword();
         username.setPassword(encoder.encode(password));
         usernameRepository.save(username);
     }
-    public Username getByLogin(String login){
-        return  usernameRepository.findByLogin(login);
+
+    public Username getByLogin( String login ) {
+        return usernameRepository.findByLogin(login);
+
+    }
+
+    public Username getByEmail( String email ) {
+        return usernameRepository.findByEmail(email);
     }
 }

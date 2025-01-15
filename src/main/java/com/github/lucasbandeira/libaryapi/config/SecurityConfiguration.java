@@ -1,6 +1,7 @@
 package com.github.lucasbandeira.libaryapi.config;
 
 import com.github.lucasbandeira.libaryapi.security.CustomUserDetailsService;
+import com.github.lucasbandeira.libaryapi.security.SocialLoginSuccessHandler;
 import com.github.lucasbandeira.libaryapi.service.UsernameService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,13 +12,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.core.GrantedAuthorityDefaults;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -26,18 +23,18 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration {
 
     @Bean
-    public SecurityFilterChain securityFilterChain( HttpSecurity httpSecurity ) throws Exception {
+    public SecurityFilterChain securityFilterChain( HttpSecurity httpSecurity, SocialLoginSuccessHandler successHandler ) throws Exception {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
 //                .formLogin(configure -> configure.loginPage("/login"))
                 .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize -> {
-                    authorize.requestMatchers(HttpMethod.POST,"/login/**").permitAll();
+                    authorize.requestMatchers(HttpMethod.POST, "/login/**").permitAll();
                     authorize.requestMatchers("/usernames/**").permitAll();
                     authorize.anyRequest().authenticated();
                 })
-                .oauth2Login(Customizer.withDefaults())
+                .oauth2Login(oauth2 -> oauth2.successHandler(successHandler))
                 .build();
     }
 
@@ -53,7 +50,7 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public GrantedAuthorityDefaults grantedAuthorityDefaults(){
+    public GrantedAuthorityDefaults grantedAuthorityDefaults() {
         return new GrantedAuthorityDefaults("");
     }
 }
