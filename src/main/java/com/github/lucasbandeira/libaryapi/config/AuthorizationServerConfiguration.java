@@ -1,8 +1,13 @@
 package com.github.lucasbandeira.libaryapi.config;
 
+import com.github.lucasbandeira.libaryapi.security.CustomUserDetailsService;
+import com.github.lucasbandeira.libaryapi.service.UsernameService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
@@ -20,6 +25,13 @@ public class AuthorizationServerConfiguration {
                 .accessTokenTimeToLive(Duration.ofMinutes(60))
                 .build();
     }
+
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(10);
+    }
+
 
     @Bean
     public ClientSettings clientSettings(){
