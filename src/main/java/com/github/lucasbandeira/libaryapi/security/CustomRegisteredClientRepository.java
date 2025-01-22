@@ -21,6 +21,11 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CustomRegisteredClientRepository implements RegisteredClientRepository {
 
+
+    private final ClientService clientService;
+    private final TokenSettings tokenSettings;
+    private final ClientSettings clientSettings;
+
     @Bean
     @Order(1)
     public SecurityFilterChain authServerSecurityFilterChain( HttpSecurity httpSecurity )throws Exception{
@@ -35,9 +40,7 @@ public class CustomRegisteredClientRepository implements RegisteredClientReposit
     }
 
 
-    private final ClientService clientService;
-    private final TokenSettings tokenSettings;
-    private final ClientSettings clientSettings;
+
 
 
     @Override
