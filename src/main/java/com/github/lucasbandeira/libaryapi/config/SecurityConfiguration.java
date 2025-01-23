@@ -1,5 +1,6 @@
 package com.github.lucasbandeira.libaryapi.config;
 
+import com.github.lucasbandeira.libaryapi.security.JwtCustomAuthenticationFilter;
 import com.github.lucasbandeira.libaryapi.security.SocialLoginSuccessHandler;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -19,6 +20,7 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
+import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 
 import java.security.KeyPair;
@@ -33,7 +35,7 @@ import java.util.UUID;
 public class SecurityConfiguration {
 
     @Bean
-    public SecurityFilterChain securityFilterChain( HttpSecurity httpSecurity, SocialLoginSuccessHandler successHandler ) throws Exception {
+    public SecurityFilterChain securityFilterChain( HttpSecurity httpSecurity, SocialLoginSuccessHandler successHandler, JwtCustomAuthenticationFilter jwtCustomAuthenticationFilter ) throws Exception {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
@@ -50,6 +52,7 @@ public class SecurityConfiguration {
                 })
 
                 .oauth2ResourceServer(oAuth2ResourceServer -> oAuth2ResourceServer.jwt(Customizer.withDefaults()))
+                .addFilterAfter(jwtCustomAuthenticationFilter, BearerTokenAuthenticationFilter.class)
                 .build();
     }
 
