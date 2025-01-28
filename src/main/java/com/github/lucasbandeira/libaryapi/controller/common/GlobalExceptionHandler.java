@@ -5,6 +5,7 @@ import com.github.lucasbandeira.libaryapi.controller.dto.ErrorResponse;
 import com.github.lucasbandeira.libaryapi.exceptions.DuplicateRegisterException;
 import com.github.lucasbandeira.libaryapi.exceptions.InvalidCampException;
 import com.github.lucasbandeira.libaryapi.exceptions.OperationNotAllowedException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
@@ -17,11 +18,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public ErrorResponse handleMethodArgumentNotValidException( MethodArgumentNotValidException e ) {
+        log.error("validation Error: {} ", e.getMessage());
         List <FieldError> fieldErrors = e.getFieldErrors();
         List <ApiFieldError> fieldErrorList = fieldErrors.
                 stream()
@@ -56,6 +59,7 @@ public class GlobalExceptionHandler {
     }
 
     public ErrorResponse handleGlobalException( RuntimeException e ) {
+        log.error("unexpected error: {}",e);
         return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "An unexpected error has occurred." +
                 " contact the administration", List.of());
     }

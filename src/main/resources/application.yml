@@ -25,7 +25,7 @@ logging:
     name: app.log
   level:
     root: warn
-    io:
+    com:
       github:
         lucasbandeira: trace
     org:
