@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -30,6 +31,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/authors")
 @RequiredArgsConstructor
 @Tag(name = "Authors")
+@Slf4j
 public class AuthorController implements GenericController {
 
     private final AuthorService authorService;
@@ -93,6 +95,13 @@ public class AuthorController implements GenericController {
     })
     public ResponseEntity <List <AuthorDTO>> search( @RequestParam(value = "name", required = false) String name,
                                                      @RequestParam(value = "nationality", required = false) String nationality ) {
+
+        log.trace("search authors");
+        log.debug("search authors");
+        log.info("search authors");
+        log.warn("search authors");
+        log.error("search authors");
+
         List <Author> result = authorService.searchByExample(name, nationality);
         List <AuthorDTO> authorList = result
                 .stream()

@@ -20,8 +20,18 @@ spring:
             client-secret: ${GOOGLE_CLIENT_SECRET}
 
 logging:
+  pattern:
   file:
     name: app.log
+  level:
+    root: warn
+    io:
+      github:
+        lucasbandeira: trace
+    org:
+      springframework:
+        web: debug
+        security: trace
 
 springdoc:
   override-with-generic-response: false
